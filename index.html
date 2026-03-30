@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lyceu — Escola de Filosofia Clássica · Prof. Lucca de Tomás</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Cinzel:wght@400;600;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:    #0e0d0b;
+  --deep:   #141210;
+  --card:   #1a1814;
+  --card2:  #201e1a;
+  --gold:   #c9a84c;
+  --gold2:  #e8c96a;
+  --cream:  #f2ead8;
+  --muted:  rgba(242,234,216,0.58);
+  --dim:    rgba(242,234,216,0.28);
+  --border: rgba(201,168,76,0.18);
+  --r: 16px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Lato', sans-serif;
+  background: var(--ink);
+  color: var(--cream);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* noise grain */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 999; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.4;
+}
+
+.gold  { color: var(--gold); }
+.serif { font-family: 'Cormorant Garamond', serif; }
+
+/* ── layout helpers ── */
+section { position: relative; z-index: 1; }
+.w    { max-width: 1160px; margin: 0 auto; padding: 0 52px; }
+.w-sm { max-width: 760px;  margin: 0 auto; padding: 0 52px; }
+
+.tag {
+  display: inline-block;
+  font-family: 'Cinzel', serif;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--border);
+  padding: 5px 16px; border-radius: 50px;
+  margin-bottom: 20px;
+}
+
+.ornament {
+  display: flex; align-items: center; gap: 18px;
+  justify-content: center; margin-bottom: 28px;
+  color: var(--gold); font-size: 14px;
+}
+.ornament::before, .ornament::after {
+  content: '';
+  flex: 1; max-width: 110px; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201,168,76,0.5));
+}
+.ornament::after { background: linear-gradient(to left, transparent, rgba(201,168,76,0.5)); }
+
+/* ── buttons ── */
+.btn-gold {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--gold); color: var(--ink);
+  font-family: 'Cinzel', serif; font-weight: 700;
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  padding: 16px 34px; border-radius: 50px;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: background .2s, transform .15s, box-shadow .2s;
+  box-shadow: 0 4px 24px rgba(201,168,76,0.22);
+}
+.btn-gold:hover { background: var(--gold2); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(201,168,76,0.35); }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: var(--cream);
+  font-family: 'Cinzel', serif; font-size: 11px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 15px 32px; border-radius: 50px;
+  border: 1px solid rgba(242,234,216,0.2);
+  text-decoration: none; cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.btn-ghost:hover { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+
+/* ══════════════════════════════════
+   NAV
+══════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(14,13,11,0.9);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 52px;
+}
+.nav-logo {
+  font-family: 'Cinzel', serif; font-weight: 900;
+  font-size: 20px; color: var(--cream); letter-spacing: 4px;
+  text-decoration: none;
+  display: flex; align-items: center; gap: 14px;
+}
+.nav-logo-icon {
+  width: 38px; height: 38px; border-radius: 8px;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 16px;
+  /* LOGO: substitua por <img src="logo.svg" width="38" height="38"> */
+}
+.nav-links { display: flex; gap: 34px; list-style: none; }
+.nav-links a {
+  font-family: 'Cinzel', serif; font-size: 10px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+/* ══════════════════════════════════
+   HERO
+══════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 440px;
+  position: relative; overflow: hidden;
+  padding-top: 68px;
+}
+
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background: var(--deep);
+  /*
+    IMAGEM FUNDO HERO — 1440×900px
+    background-image: url('hero-bg.jpg');
+    background-size: cover; background-position: center top;
+  */
+}
+.hero-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(110deg,
+    rgba(14,13,11,0.97) 0%,
+    rgba(14,13,11,0.80) 55%,
+    rgba(14,13,11,0.45) 100%);
+}
+/* grid overlay */
+.hero-bg::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 1;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.hero-left {
+  position: relative; z-index: 2;
+  padding: 100px 60px 80px 52px;
+  display: flex; flex-direction: column; justify-content: center; gap: 0;
+}
+
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 28px;
+}
+.hero-badge-pill {
+  background: rgba(201,168,76,0.12);
+  border: 1px solid var(--border);
+  color: var(--gold);
+  font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 3px;
+  padding: 6px 18px; border-radius: 50px;
+}
+
+.hero h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(34px, 4.2vw, 60px);
+  font-weight: 700; line-height: 1.1;
+  color: var(--cream); margin-bottom: 26px;
+  letter-spacing: 0.5px;
+}
+.hero h1 em {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; color: var(--gold);
+  font-size: 1.12em; font-weight: 600;
+}
+
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; color: var(--muted); line-height: 1.7;
+  max-width: 540px; margin-bottom: 40px;
+}
+.hero-sub em { color: var(--gold); font-style: italic; }
+
+.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
+
+.hero-meta { display: flex; flex-wrap: wrap; gap: 20px; }
+.hero-meta-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--muted);
+}
+.h-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+
+/* hero right card */
+.hero-right {
+  position: relative; z-index: 2;
+  display: flex; align-items: center;
+  padding: 60px 52px 60px 0;
+}
+.hero-card {
+  background: rgba(26,24,20,0.88);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 38px 34px;
+  width: 100%;
+  display: flex; flex-direction: column; gap: 22px;
+}
+.hc-title {
+  font-family: 'Cinzel', serif; font-size: 11px;
+  letter-spacing: 3px; color: var(--gold);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 14px;
+}
+.hc-price { font-family: 'Cormorant Garamond', serif; }
+.hc-label { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+.hc-val { font-size: 54px; font-weight: 700; color: var(--cream); line-height: 1; }
+.hc-val sup { font-size: 20px; color: var(--gold); vertical-align: super; }
+.hc-period { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+.hc-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.hc-list li {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; color: var(--muted); line-height: 1.35;
+  display: flex; align-items: flex-start; gap: 9px;
+}
+.hc-list li .ck { color: var(--gold); font-size: 12px; flex-shrink: 0; margin-top: 3px; }
+
+/* ══════════════════════════════════
+   STATS BAR
+══════════════════════════════════ */
+.stats-bar {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  display: flex; flex-wrap: wrap;
+}
+.stat {
+  flex: 1; min-width: 150px;
+  padding: 36px 20px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+.stat:last-child { border-right: none; }
+.stat-val {
+  font-family: 'Cinzel', serif;
+  font-size: 34px; font-weight: 700;
+  color: var(--gold); display: block;
+}
+.stat-lbl {
+  font-size: 11px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 1.5px; margin-top: 5px;
+}
+
+/* ══════════════════════════════════
+   O QUE É O LYCEU
+══════════════════════════════════ */
+.section-what { padding: 110px 0; background: var(--deep); }
+
+.section-what h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(26px, 3.2vw, 44px);
+  font-weight: 700; color: var(--cream);
+  line-height: 1.2; margin-bottom: 22px; text-align: center;
+}
+.section-what h2 em {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; color: var(--gold); font-size: 1.1em;
+}
+.section-what .lead {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; color: var(--muted); line-height: 1.78;
+  text-align: center; margin-bottom: 56px;
+}
+
+.what-3 {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 56px;
+}
+.what-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 34px 28px;
+  transition: border-color .25s, transform .2s;
+}
+.what-card:hover { border-color: rgba(201,168,76,0.42); transform: translateY(-5px); }
+.what-num {
+  font-family: 'Cinzel', serif; font-size: 10px;
+  color: var(--gold); letter-spacing: 3px; margin-bottom: 14px; display: block;
+}
+.what-card h3 {
+  font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700;
+  color: var(--cream); margin-bottom: 10px;
+}
+.what-card p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; color: var(--muted); line-height: 1.65;
+}
+
+.quote-wrap {
+  max-width: 660px; margin: 68px auto 0;
+  border-left: 3px solid var(--gold);
+  padding: 22px 32px;
+  background: rgba(201,168,76,0.05);
+  border-radius: 0 12px 12px 0;
+}
+.quote-wrap blockquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 22px;
+  color: var(--cream); line-height: 1.6; margin-bottom: 10px;
+}
+.quote-wrap cite {
+  font-family: 'Cinzel', serif; font-size: 10px;
+  letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); font-style: normal;
+}
+
+/* ══════════════════════════════════
+   4 ANOS
+══════════════════════════════════ */
+.section-years { padding: 110px 0; background: var(--ink); }
+.section-years .hd { text-align: center; margin-bottom: 64px; }
+.section-years h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(24px, 3vw, 42px);
+  font-weight: 700; color: var(--cream); margin-bottom: 14px;
+}
+.section-years .sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px; color: var(--muted);
+}
+
+.years-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.yr-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 30px 22px;
+  position: relative; overflow: hidden;
+  transition: border-color .25s, transform .2s;
+}
+.yr-card:hover { border-color: rgba(201,168,76,0.44); transform: translateY(-5px); }
+.yr-card::before {
+  content: attr(data-n);
+  position: absolute; top: -10px; right: 12px;
+  font-family: 'Cinzel', serif; font-size: 88px; font-weight: 900;
+  color: rgba(201,168,76,0.045); line-height: 1;
+  pointer-events: none; user-select: none;
+}
+.yr-pill {
+  display: inline-block;
+  background: rgba(201,168,76,0.1); border: 1px solid var(--border);
+  color: var(--gold); font-family: 'Cinzel', serif;
+  font-size: 9px; letter-spacing: 2px;
+  padding: 4px 12px; border-radius: 50px; margin-bottom: 14px;
+}
+.yr-card h3 {
+  font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700;
+  color: var(--cream); margin-bottom: 10px;
+}
+.yr-card p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; color: var(--muted); line-height: 1.6;
+}
+.yr-authors { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 5px; }
+.yr-chip {
+  background: rgba(242,234,216,0.05); border: 1px solid rgba(242,234,216,0.1);
+  color: var(--dim); font-size: 11px; padding: 3px 10px; border-radius: 50px;
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+}
+
+/* ══════════════════════════════════
+   CURRÍCULO ACCORDION
+══════════════════════════════════ */
+.section-curr {
+  padding: 110px 0;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.section-curr .hd { text-align: center; margin-bottom: 56px; }
+.section-curr h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(22px, 2.6vw, 38px);
+  font-weight: 700; color: var(--cream); margin-bottom: 12px;
+}
+.section-curr .sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px; color: var(--muted);
+}
+
+.acc-wrap { max-width: 840px; margin: 0 auto; padding: 0 52px; display: flex; flex-direction: column; gap: 10px; }
+
+.acc { border-radius: 12px; overflow: hidden; }
+.acc-h {
+  width: 100%; background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 22px;
+  display: flex; justify-content: space-between; align-items: center;
+  cursor: pointer; text-align: left;
+  transition: border-color .2s;
+}
+.acc.open .acc-h { border-radius: 12px 12px 0 0; border-color: rgba(201,168,76,0.4); }
+.acc-h:hover { border-color: rgba(201,168,76,0.28); }
+.acc-h-t {
+  font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700;
+  color: var(--cream);
+}
+.acc-h-s {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px; color: var(--muted); margin-top: 3px; font-style: italic;
+}
+.acc-ico {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid var(--border); color: var(--gold); font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; background: rgba(201,168,76,0.08);
+  transition: transform .25s, background .2s;
+}
+.acc.open .acc-ico { transform: rotate(45deg); background: var(--gold); color: var(--ink); border-color: var(--gold); }
+
+.acc-b {
+  background: rgba(20,18,16,0.7);
+  border: 1px solid rgba(201,168,76,0.18); border-top: none;
+  border-radius: 0 0 12px 12px;
+  max-height: 0; overflow: hidden;
+  transition: max-height .4s ease, padding .2s;
+  padding: 0 22px;
+}
+.acc.open .acc-b { max-height: 1400px; padding: 18px 22px 24px; }
+
+.acc-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.acc-list li {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; color: var(--muted); line-height: 1.4;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.acc-list li::before { content: '◆'; color: var(--gold); font-size: 8px; margin-top: 5px; flex-shrink: 0; }
+
+/* ══════════════════════════════════
+   FORMATO DAS AULAS
+══════════════════════════════════ */
+.section-format { padding: 110px 0; background: var(--deep); }
+.section-format .inner {
+  max-width: 1160px; margin: 0 auto; padding: 0 52px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.fmt-text h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(22px, 2.8vw, 38px);
+  font-weight: 700; color: var(--cream); line-height: 1.2; margin-bottom: 22px;
+}
+.fmt-text h2 em { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold); font-size: 1.1em; }
+.fmt-text p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px; color: var(--muted); line-height: 1.78; margin-bottom: 14px;
+}
+
+.fmt-cards { display: flex; flex-direction: column; gap: 12px; }
+.fmt-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 22px 26px;
+  display: flex; align-items: flex-start; gap: 16px;
+  transition: border-color .2s, transform .15s;
+}
+.fmt-card:hover { border-color: rgba(201,168,76,0.4); transform: translateX(5px); }
+.fmt-icon {
+  width: 44px; height: 44px; border-radius: 11px;
+  background: rgba(201,168,76,0.09); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.fmt-card h4 {
+  font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700;
+  color: var(--cream); letter-spacing: 1px; margin-bottom: 5px;
+}
+.fmt-card p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; color: var(--muted); line-height: 1.5;
+}
+
+/* ══════════════════════════════════
+   PROFESSOR
+══════════════════════════════════ */
+.section-prof {
+  min-height: 100vh;
+  display: flex; background: var(--ink); overflow: hidden;
+}
+.prof-img {
+  width: 42%; flex-shrink: 0;
+  background: var(--deep); position: relative;
+  min-height: 600px;
+  /*
+    FOTO PROFESSOR — mín. 600×700px
+    background-image: url('lucca.jpg');
+    background-size: cover; background-position: center top;
+  */
+  display: flex; align-items: center; justify-content: center;
+}
+.prof-img::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, transparent 60%, var(--ink));
+  pointer-events: none;
+}
+.prof-img .ph {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; color: #333; font-family: 'Cinzel', serif;
+  font-size: 12px; text-align: center; width: 100%; height: 100%; min-height: 600px;
+  position: absolute; inset: 0;
+}
+
+.prof-body {
+  flex: 1; padding: 100px 70px 100px 60px;
+  display: flex; flex-direction: column; justify-content: center; gap: 22px;
+}
+.prof-body h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(26px, 3vw, 44px);
+  font-weight: 700; color: var(--cream); line-height: 1.12;
+}
+.prof-role {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(201,168,76,0.1); border: 1px solid var(--border);
+  color: var(--gold);
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px;
+  padding: 8px 20px; border-radius: 50px; width: fit-content;
+}
+.prof-body p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px; color: var(--muted); line-height: 1.82;
+}
+.prof-body p strong { color: var(--cream); }
+.prof-body p em { color: var(--gold); font-style: italic; }
+
+.prof-kpis { display: flex; gap: 36px; flex-wrap: wrap; }
+.kpi-val {
+  font-family: 'Cinzel', serif; font-size: 30px; font-weight: 700; color: var(--gold);
+}
+.kpi-lbl { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
+
+/* ══════════════════════════════════
+   PARA QUEM É
+══════════════════════════════════ */
+.section-who {
+  padding: 110px 0; background: var(--card);
+  border-top: 1px solid var(--border);
+}
+.section-who .hd { text-align: center; margin-bottom: 56px; }
+.section-who h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(22px, 2.8vw, 40px);
+  font-weight: 700; color: var(--cream); margin-bottom: 12px;
+}
+.section-who .sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px; color: var(--muted);
+}
+
+.who-2 {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+  max-width: 880px; margin: 0 auto; padding: 0 52px;
+}
+.who-card {
+  background: var(--deep); border-radius: var(--r); padding: 36px 30px;
+}
+.who-card.is  { border: 1px solid rgba(201,168,76,0.26); }
+.who-card.not { border: 1px solid rgba(242,234,216,0.07); }
+.who-title {
+  font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 2px;
+  margin-bottom: 22px; display: flex; align-items: center; gap: 8px;
+}
+.who-card.is  .who-title { color: var(--gold); }
+.who-card.not .who-title { color: var(--muted); }
+
+.who-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.who-list li {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; color: var(--muted); line-height: 1.4;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.w-ico { flex-shrink: 0; font-size: 12px; margin-top: 3px; }
+.who-card.is  .w-ico { color: var(--gold); }
+.who-card.not .w-ico { color: rgba(242,234,216,0.2); }
+
+/* ══════════════════════════════════
+   DEPOIMENTOS
+══════════════════════════════════ */
+.section-dep { padding: 110px 0; background: var(--ink); }
+.section-dep .hd { text-align: center; margin-bottom: 56px; }
+.section-dep h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(22px, 2.8vw, 40px);
+  font-weight: 700; color: var(--cream); margin-bottom: 12px;
+}
+.section-dep .sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px; color: var(--muted);
+}
+
+.dep-3 {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+  max-width: 1100px; margin: 0 auto; padding: 0 52px;
+}
+.dep-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 32px 26px;
+}
+.dep-stars { color: var(--gold); font-size: 13px; letter-spacing: 2px; margin-bottom: 18px; display: block; }
+.dep-q {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 19px; color: var(--cream);
+  line-height: 1.65; margin-bottom: 22px;
+}
+.dep-person { display: flex; align-items: center; gap: 12px; }
+.dep-ava {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: rgba(201,168,76,0.14); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cinzel', serif; font-size: 14px; color: var(--gold);
+  /* AVATAR 42×42px — substitua por <img src="aluno.jpg" style="border-radius:50%;"> */
+}
+.dep-name { font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700; color: var(--cream); }
+.dep-role { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* ══════════════════════════════════
+   INVESTIMENTO
+══════════════════════════════════ */
+.section-price {
+  padding: 110px 0; background: var(--deep);
+  border-top: 1px solid var(--border);
+}
+.section-price .hd { text-align: center; margin-bottom: 56px; }
+.section-price h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(22px, 2.8vw, 40px);
+  font-weight: 700; color: var(--cream); margin-bottom: 12px;
+}
+.section-price .sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px; color: var(--muted);
+}
+
+.price-card {
+  max-width: 540px; margin: 0 auto;
+  background: var(--card);
+  border: 1px solid rgba(201,168,76,0.36);
+  border-radius: 24px; padding: 54px 48px;
+  text-align: center;
+  box-shadow: 0 0 100px rgba(201,168,76,0.07);
+}
+.price-school {
+  font-family: 'Cinzel', serif; font-size: 10px;
+  letter-spacing: 4px; color: var(--gold);
+  text-transform: uppercase; margin-bottom: 8px; display: block;
+}
+.price-card h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 26px; color: var(--cream); margin-bottom: 34px;
+}
+.price-main {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 74px; font-weight: 700; color: var(--cream); line-height: 1;
+}
+.price-main sup { font-size: 28px; color: var(--gold); vertical-align: super; }
+.price-period { font-size: 14px; color: var(--muted); margin: 8px 0 36px; }
+
+.price-list { list-style: none; text-align: left; margin-bottom: 36px; display: flex; flex-direction: column; gap: 12px; }
+.price-list li {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px; color: var(--muted);
+  display: flex; align-items: flex-start; gap: 12px; line-height: 1.4;
+}
+.price-list li .ck { color: var(--gold); font-size: 13px; flex-shrink: 0; margin-top: 3px; }
+
+.price-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 15px; color: var(--dim);
+  margin-top: 18px; line-height: 1.6;
+}
+
+/* ══════════════════════════════════
+   FAQ
+══════════════════════════════════ */
+.section-faq { padding: 110px 0; background: var(--ink); }
+.section-faq .hd { text-align: center; margin-bottom: 56px; }
+.section-faq h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(22px, 2.8vw, 40px);
+  font-weight: 700; color: var(--cream); margin-bottom: 12px;
+}
+
+.faq-wrap { max-width: 700px; margin: 0 auto; padding: 0 52px; }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-btn {
+  width: 100%; background: none; border: none; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 0; gap: 20px; text-align: left;
+}
+.faq-qtext {
+  font-family: 'Cinzel', serif; font-size: 12px; font-weight: 600;
+  color: var(--cream); letter-spacing: 0.3px;
+}
+.faq-ico {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid var(--border); color: var(--gold); font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: transform .25s, background .2s;
+}
+.faq-item.open .faq-ico { transform: rotate(45deg); background: var(--gold); color: var(--ink); border-color: var(--gold); }
+.faq-ans {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; color: var(--muted); line-height: 1.72;
+  max-height: 0; overflow: hidden;
+  transition: max-height .35s ease, padding .2s;
+  padding: 0;
+}
+.faq-item.open .faq-ans { max-height: 400px; padding-bottom: 20px; }
+
+/* ══════════════════════════════════
+   CTA FINAL
+══════════════════════════════════ */
+.section-cta {
+  padding: 120px 52px; background: var(--card);
+  border-top: 1px solid var(--border);
+  text-align: center; position: relative; overflow: hidden;
+}
+.section-cta::before {
+  content: 'LYCEU';
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Cinzel', serif; font-size: 180px; font-weight: 900;
+  color: rgba(201,168,76,0.028); pointer-events: none;
+  user-select: none; white-space: nowrap; letter-spacing: 18px;
+}
+.section-cta h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(26px, 4vw, 54px);
+  font-weight: 700; color: var(--cream); line-height: 1.12;
+  margin-bottom: 20px; position: relative; z-index: 1;
+}
+.section-cta h2 em {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; color: var(--gold); font-size: 1.1em;
+}
+.section-cta .lead {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; color: var(--muted);
+  max-width: 540px; margin: 0 auto 42px; line-height: 1.7;
+  position: relative; z-index: 1;
+}
+.cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+.cta-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 16px; color: var(--dim);
+  margin-top: 20px;
+}
+
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+footer {
+  background: var(--deep); border-top: 1px solid var(--border);
+  padding: 52px;
+  display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; align-items: flex-start;
+}
+.ft-brand .ft-name {
+  font-family: 'Cinzel', serif; font-size: 17px; font-weight: 900;
+  color: var(--cream); letter-spacing: 4px; display: block; margin-bottom: 8px;
+}
+.ft-brand p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px; color: var(--muted); max-width: 250px; line-height: 1.6;
+}
+.ft-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.ft-links a {
+  font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  transition: color .2s;
+}
+.ft-links a:hover { color: var(--gold); }
+.ft-copy {
+  width: 100%; border-top: 1px solid var(--border); padding-top: 22px; margin-top: 10px;
+  font-size: 12px; color: var(--dim);
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+}
+.ft-copy a { color: var(--gold); text-decoration: none; }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 960px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-left { padding: 80px 24px 60px; }
+  .hero-right { display: none; }
+  .w, .w-sm { padding: 0 24px; }
+  .what-3 { grid-template-columns: 1fr; }
+  .years-4 { grid-template-columns: 1fr 1fr; }
+  .section-format .inner { grid-template-columns: 1fr; padding: 0 24px; }
+  .section-prof { flex-direction: column; }
+  .prof-img { width: 100%; min-height: 300px; }
+  .prof-body { padding: 52px 24px; }
+  .who-2 { grid-template-columns: 1fr; padding: 0 24px; }
+  .dep-3 { grid-template-columns: 1fr; padding: 0 24px; }
+  .acc-wrap { padding: 0 24px; }
+  .price-card { margin: 0 24px; padding: 36px 24px; }
+  .faq-wrap { padding: 0 24px; }
+  footer { padding: 32px 24px; }
+  .ft-copy { flex-direction: column; text-align: center; }
+  .stats-bar .stat { min-width: 50%; border-bottom: 1px solid var(--border); }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">
+      <!-- LOGO: substitua por <img src="logo.svg" width="38" height="38"> -->
+      ⚜
+    </div>
+    LYCEU
+  </a>
+  <ul class="nav-links">
+    <li><a href="#curriculo">Currículo</a></li>
+    <li><a href="#professor">O Professor</a></li>
+    <li><a href="#formato">Formato</a></li>
+    <li><a href="#depoimentos">Depoimentos</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#investimento" class="btn-gold" style="font-size:10px;padding:12px 24px;">Matricular-se</a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-bg">
+    <!--
+      IMAGEM FUNDO HERO — 1440×900px
+      Adicione no .hero-bg:
+      background-image: url('hero-bg.jpg');
+      background-size: cover; background-position: center top;
+    -->
+  </div>
+
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <span class="hero-badge-pill">ESCOLA DE FILOSOFIA CLÁSSICA</span>
+    </div>
+
+    <h1>Pense com clareza<br>e profundidade<br><em>como os grandes.</em></h1>
+
+    <p class="hero-sub">
+      O <strong>Lyceu</strong> é uma escola de filosofia tradicional pelo método socrático,
+      seguindo o currículo do <em>Thomas Aquinas College</em> —
+      conduzida ao vivo pelo Prof. Lucca de Tomás.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#investimento" class="btn-gold">Garantir minha vaga →</a>
+      <a href="#curriculo" class="btn-ghost">Ver o currículo</a>
+    </div>
+
+    <div class="hero-meta">
+      <span class="hero-meta-item"><span class="h-dot"></span>Aulas ao vivo no Zoom</span>
+      <span class="hero-meta-item"><span class="h-dot"></span>18h00 às 19h30</span>
+      <span class="hero-meta-item"><span class="h-dot"></span>4 anos de formação</span>
+      <span class="hero-meta-item"><span class="h-dot"></span>Textos traduzidos pelo Prof.</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-card">
+      <div class="hc-title">Investimento</div>
+      <div class="hc-price">
+        <div class="hc-label">Mensalidade</div>
+        <div class="hc-val"><sup>R$</sup>500</div>
+        <div class="hc-period">por mês · 1º ano completo</div>
+      </div>
+      <ul class="hc-list">
+        <li><span class="ck">✦</span>Aulas ao vivo no Zoom</li>
+        <li><span class="ck">✦</span>Gravações na plataforma</li>
+        <li><span class="ck">✦</span>Textos traduzidos (exclusivo)</li>
+        <li><span class="ck">✦</span>Método socrático · Currículo TAC</li>
+        <li><span class="ck">✦</span>Comunidade de alunos</li>
+      </ul>
+      <a href="#investimento" class="btn-gold" style="width:100%;justify-content:center;">Matricular-se agora →</a>
+      <p style="font-size:13px;color:var(--dim);text-align:center;font-style:italic;font-family:'Cormorant Garamond',serif;">Vagas limitadas por turma</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS ══ -->
+<div class="stats-bar">
+  <div class="stat"><span class="stat-val">4</span><span class="stat-lbl">Anos de formação</span></div>
+  <div class="stat"><span class="stat-val">90<small style="font-size:18px">min</small></span><span class="stat-lbl">Por aula ao vivo</span></div>
+  <div class="stat"><span class="stat-val">18h</span><span class="stat-lbl">Início das aulas</span></div>
+  <div class="stat"><span class="stat-val">100%</span><span class="stat-lbl">Textos traduzidos</span></div>
+</div>
+
+<!-- ══ O QUE É ══ -->
+<section class="section-what">
+  <div class="w-sm" style="text-align:center;">
+    <div class="ornament">⚜</div>
+    <span class="tag">O Lyceu</span>
+    <h2>Não é um curso.<br>É uma <em>escola de formação.</em></h2>
+    <p class="lead">
+      Ao longo de quatro anos, estudamos o corpo fundamental da filosofia ocidental —
+      da lógica à metafísica — com rigor, textos originais e debate vivo.
+      Seguimos o modelo que formou os maiores pensadores do Ocidente.
+    </p>
+
+    <div class="quote-wrap" style="margin-left:auto;margin-right:auto;">
+      <blockquote>"A sabedoria não é vencida pela malícia."</blockquote>
+      <cite>Sapientiam Autem Non Vincit Malitia</cite>
+    </div>
+  </div>
+
+  <div class="w">
+    <div class="what-3">
+      <div class="what-card">
+        <span class="what-num">01 ·</span>
+        <h3>Método Socrático</h3>
+        <p>Não memorização — mas diálogo. Cada aula é conduzida como uma investigação filosófica real, onde você pensa, não apenas ouve.</p>
+      </div>
+      <div class="what-card">
+        <span class="what-num">02 ·</span>
+        <h3>Textos Traduzidos</h3>
+        <p>O Prof. Lucca traduz pessoalmente todos os textos do currículo. Apenas os alunos do Lyceu têm acesso a essas traduções exclusivas.</p>
+      </div>
+      <div class="what-card">
+        <span class="what-num">03 ·</span>
+        <h3>Ao Vivo no Zoom</h3>
+        <p>Aulas presenciais no ambiente virtual — com participação real e debate filosófico genuíno. Sessões gravadas para revisão.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 4 ANOS ══ -->
+<section class="section-years" id="curriculo">
+  <div class="w">
+    <div class="hd">
+      <div class="ornament">⚜</div>
+      <span class="tag">Currículo</span>
+      <h2>Quatro anos de formação filosófica</h2>
+      <p class="sub">Do fundamento lógico à cúpula metafísica — o caminho completo da tradição.</p>
+    </div>
+
+    <div class="years-4">
+      <div class="yr-card" data-n="1">
+        <span class="yr-pill">1º ANO · ATUAL</span>
+        <h3>Filosofia da Razão</h3>
+        <p>Lógica, linguagem e os fundamentos do pensamento correto. De Platão a Aristóteles e seus comentadores medievais.</p>
+        <div class="yr-authors">
+          <span class="yr-chip">Platão</span>
+          <span class="yr-chip">Aristóteles</span>
+          <span class="yr-chip">Porfírio</span>
+          <span class="yr-chip">Tomás de Aquino</span>
+          <span class="yr-chip">C.S. Lewis</span>
+        </div>
+      </div>
+      <div class="yr-card" data-n="2">
+        <span class="yr-pill">2º ANO</span>
+        <h3>Física e Psicologia</h3>
+        <p>A filosofia da natureza e da alma — como a tradição compreende o mundo material e o ser vivo.</p>
+        <div class="yr-authors">
+          <span class="yr-chip">Aristóteles</span>
+          <span class="yr-chip">Tomás de Aquino</span>
+        </div>
+      </div>
+      <div class="yr-card" data-n="3">
+        <span class="yr-pill">3º ANO</span>
+        <h3>Ética e Política</h3>
+        <p>Como viver bem e organizar a comunidade — as questões práticas da filosofia clássica.</p>
+        <div class="yr-authors">
+          <span class="yr-chip">Aristóteles</span>
+          <span class="yr-chip">Platão</span>
+          <span class="yr-chip">Cícero</span>
+        </div>
+      </div>
+      <div class="yr-card" data-n="4">
+        <span class="yr-pill">4º ANO</span>
+        <h3>Metafísica</h3>
+        <p>A ciência do ser enquanto ser — o ápice da filosofia e a pergunta última sobre a realidade.</p>
+        <div class="yr-authors">
+          <span class="yr-chip">Aristóteles</span>
+          <span class="yr-chip">Tomás de Aquino</span>
+          <span class="yr-chip">Agostinho</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CURRÍCULO ANO 1 ══ -->
+<section class="section-curr">
+  <div class="hd w">
+    <span class="tag">1º Ano · Filosofia da Razão</span>
+    <h2>O currículo completo do primeiro ano</h2>
+    <p class="sub">Clique em cada módulo para ver as obras e textos previstos.</p>
+  </div>
+
+  <div class="acc-wrap">
+    <div class="acc open" onclick="toggleAcc(this)">
+      <div class="acc-h">
+        <div><div class="acc-h-t">Aulas Introdutórias</div><div class="acc-h-s">C.S. Lewis · Platão · Euclides</div></div>
+        <span class="acc-ico">+</span>
+      </div>
+      <div class="acc-b">
+        <ul class="acc-list">
+          <li>C.S. Lewis — Aprendizado em Tempos de Guerra</li>
+          <li>Platão — Mênon (diálogo completo)</li>
+          <li>Platão — Apologia de Sócrates</li>
+          <li>Euclides — Elementos, Livro I</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="toggleAcc(this)">
+      <div class="acc-h">
+        <div><div class="acc-h-t">Os 5 Predicáveis</div><div class="acc-h-s">Porfírio — Isagoge</div></div>
+        <span class="acc-ico">+</span>
+      </div>
+      <div class="acc-b">
+        <ul class="acc-list">
+          <li>Isagoge: Gênero · Espécie · Diferença</li>
+          <li>Isagoge: Propriedade e Acidente</li>
+          <li>Isagoge: Características fundamentais dos 5 predicáveis (partes 1, 2 e 3)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="toggleAcc(this)">
+      <div class="acc-h">
+        <div><div class="acc-h-t">Categorias (Predicamentos)</div><div class="acc-h-s">Aristóteles — Categorias</div></div>
+        <span class="acc-ico">+</span>
+      </div>
+      <div class="acc-b">
+        <ul class="acc-list">
+          <li>Ante-predicamentos · Predicamentos · Pós-predicamentos</li>
+          <li>Categorias 1–2 · 3–4 · 5 (partes 1 e 2)</li>
+          <li>Categorias 6 · 7 · 8–9 · 10 · 12–13</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="toggleAcc(this)">
+      <div class="acc-h">
+        <div><div class="acc-h-t">Da Interpretação</div><div class="acc-h-s">Aristóteles — De Interpretatione</div></div>
+        <span class="acc-ico">+</span>
+      </div>
+      <div class="acc-b">
+        <ul class="acc-list">
+          <li>De Interpretatione 1–3 · 4–6 · 7–8 · 9 · 11 · 12</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="toggleAcc(this)">
+      <div class="acc-h">
+        <div><div class="acc-h-t">Primeiros Analíticos</div><div class="acc-h-s">Aristóteles — Livros I e II</div></div>
+        <span class="acc-ico">+</span>
+      </div>
+      <div class="acc-b">
+        <ul class="acc-list">
+          <li>Livro I: caps. 1 · 2–3 · 4 · 5 · 6 · 7</li>
+          <li>Livro II: caps. 21 · 22 · 23–24 · 25–26 · 27</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="toggleAcc(this)">
+      <div class="acc-h">
+        <div><div class="acc-h-t">Analíticos Posteriores</div><div class="acc-h-s">Aristóteles — Livros I e II</div></div>
+        <span class="acc-ico">+</span>
+      </div>
+      <div class="acc-b">
+        <ul class="acc-list">
+          <li>Livro I: caps. 1–5 · 6–7 · 8–9 · 10–11 · 12 · 13–14</li>
+          <li>Livro II: caps. 1–2 · 3–4 · 9–10 · 19</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="toggleAcc(this)">
+      <div class="acc-h">
+        <div><div class="acc-h-t">Dialética e Comentários</div><div class="acc-h-s">Aristóteles · Tomás de Aquino</div></div>
+        <span class="acc-ico">+</span>
+      </div>
+      <div class="acc-b">
+        <ul class="acc-list">
+          <li>Aristóteles — Tópicos, caps. 1–3</li>
+          <li>Tomás de Aquino — Comentário aos Analíticos Posteriores, Proêmio</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FORMATO ══ -->
+<section class="section-format" id="formato">
+  <div class="inner">
+    <div class="fmt-text">
+      <span class="tag">Como funciona</span>
+      <h2>Aulas ao vivo,<br><em>como na escola clássica.</em></h2>
+      <p>O Lyceu funciona como uma escola de verdade — com presença, diálogo e continuidade. As aulas acontecem ao vivo no Zoom, das 18h00 às 19h30.</p>
+      <p>Não é um curso gravado que você consome sozinho. É uma comunidade de estudo séria, conduzida por quem domina profundamente o material.</p>
+    </div>
+    <div class="fmt-cards">
+      <div class="fmt-card">
+        <div class="fmt-icon">📡</div>
+        <div>
+          <h4>Ao Vivo no Zoom</h4>
+          <p>Aulas interativas com perguntas e debate filosófico genuíno em tempo real.</p>
+        </div>
+      </div>
+      <div class="fmt-card">
+        <div class="fmt-icon">🕕</div>
+        <div>
+          <h4>18h00 às 19h30</h4>
+          <p>Horário fixo — construindo o hábito de estudo diário e consistente.</p>
+        </div>
+      </div>
+      <div class="fmt-card">
+        <div class="fmt-icon">📼</div>
+        <div>
+          <h4>Gravações na Plataforma</h4>
+          <p>Todas as aulas ficam gravadas e disponíveis para revisão quando quiser.</p>
+        </div>
+      </div>
+      <div class="fmt-card">
+        <div class="fmt-icon">📜</div>
+        <div>
+          <h4>Textos Exclusivos</h4>
+          <p>Traduções inéditas feitas pelo Prof. Lucca — acesso exclusivo para alunos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROFESSOR ══ -->
+<section class="section-prof" id="professor">
+  <div class="prof-img">
+    <div class="ph">
+      <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <div>
+        <strong>FOTO DO PROFESSOR</strong><br>
+        600 × 700px mínimo<br><br>
+        <small style="opacity:0.45">No .prof-img:<br>background-image: url('lucca.jpg');<br>background-size: cover;</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="prof-body">
+    <span class="tag">O Professor</span>
+    <h2>Lucca de Tomás</h2>
+    <span class="prof-role">Professor de Filosofia Clássica</span>
+
+    <p>
+      <strong>Lucca de Tomás</strong> é professor de filosofia formado na tradição clássica ocidental. Fundador do Lyceu, desenvolveu um currículo rigoroso baseado no modelo do <em>Thomas Aquinas College</em> — uma das últimas instituições do mundo a preservar o <em>Great Books Program</em> em sua forma original.
+    </p>
+
+    <p>
+      Traduz pessoalmente todos os textos usados no curso, muitos dos quais <strong>inéditos em português</strong>, tornando o acesso à filosofia primária acessível ao estudante brasileiro sem abrir mão da profundidade e precisão dos originais.
+    </p>
+
+    <p>
+      Conduz as aulas pelo método socrático — não como técnica pedagógica, mas como modo de vida intelectual. Cada sessão é uma investigação viva, onde alunos são chamados a <em>pensar</em>, não apenas a ouvir.
+    </p>
+
+    <div class="prof-kpis">
+      <div>
+        <div class="kpi-val">TAC</div>
+        <div class="kpi-lbl">Currículo base</div>
+      </div>
+      <div>
+        <div class="kpi-val">4+</div>
+        <div class="kpi-lbl">Anos de Lyceu</div>
+      </div>
+      <div>
+        <div class="kpi-val">100%</div>
+        <div class="kpi-lbl">Ao vivo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PARA QUEM É ══ -->
+<section class="section-who">
+  <div class="hd w">
+    <span class="tag">Clareza Total</span>
+    <h2>Este curso é pra você?</h2>
+    <p class="sub">Seja honesto consigo mesmo antes de se matricular.</p>
+  </div>
+
+  <div class="who-2">
+    <div class="who-card is">
+      <div class="who-title">✦ Para quem é</div>
+      <ul class="who-list">
+        <li><span class="w-ico">✦</span>Quer desenvolver a capacidade de pensar com independência e profundidade</li>
+        <li><span class="w-ico">✦</span>Busca formação intelectual séria — não conteúdo raso ou "resumões"</li>
+        <li><span class="w-ico">✦</span>Quer entender filosofia, cultura e religião de forma integrada</li>
+        <li><span class="w-ico">✦</span>Está disposto a dedicar tempo e atenção ao estudo diário</li>
+        <li><span class="w-ico">✦</span>Valoriza a tradição e quer estudar direto na fonte</li>
+      </ul>
+    </div>
+    <div class="who-card not">
+      <div class="who-title">✕ Para quem NÃO é</div>
+      <ul class="who-list">
+        <li><span class="w-ico">✕</span>Busca respostas prontas, fórmulas rápidas ou "hacks" intelectuais</li>
+        <li><span class="w-ico">✕</span>Não tem disposição para aulas longas e textos densos</li>
+        <li><span class="w-ico">✕</span>Quer conteúdo superficial estilo "resumo de 5 minutos"</li>
+        <li><span class="w-ico">✕</span>Não está aberto a questionar suas próprias certezas</li>
+        <li><span class="w-ico">✕</span>Procura um certificado acadêmico formal com diploma</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DEPOIMENTOS ══ -->
+<section class="section-dep" id="depoimentos">
+  <div class="hd w">
+    <div class="ornament">⚜</div>
+    <span class="tag">Depoimentos</span>
+    <h2>O que dizem os alunos</h2>
+    <p class="sub">Pessoas que transformaram sua forma de pensar com o Lyceu.</p>
+  </div>
+
+  <div class="dep-3">
+    <div class="dep-card">
+      <span class="dep-stars">★★★★★</span>
+      <p class="dep-q">"O Lyceu mudou completamente a forma como leio e penso. Depois de um semestre, textos que antes pareciam impenetráveis passaram a fazer sentido real."</p>
+      <div class="dep-person">
+        <div class="dep-ava">M</div><!-- AVATAR 42×42px -->
+        <div><div class="dep-name">MARCOS A.</div><div class="dep-role">Aluno do 1º ano</div></div>
+      </div>
+    </div>
+    <div class="dep-card">
+      <span class="dep-stars">★★★★★</span>
+      <p class="dep-q">"Nunca imaginei que filosofia pudesse ser tão viva. As aulas ao vivo criam um ambiente de debate que nenhum curso gravado consegue replicar."</p>
+      <div class="dep-person">
+        <div class="dep-ava">C</div>
+        <div><div class="dep-name">CAROLINA F.</div><div class="dep-role">Aluna do Lyceu</div></div>
+      </div>
+    </div>
+    <div class="dep-card">
+      <span class="dep-stars">★★★★★</span>
+      <p class="dep-q">"As traduções do Prof. Lucca são um presente. Ler Aristóteles em português com essa precisão e sem perder a profundidade é raro — só no Lyceu."</p>
+      <div class="dep-person">
+        <div class="dep-ava">R</div>
+        <div><div class="dep-name">RAFAEL S.</div><div class="dep-role">Aluno do 1º ano</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ INVESTIMENTO ══ -->
+<section class="section-price" id="investimento">
+  <div class="hd w">
+    <div class="ornament">⚜</div>
+    <span class="tag">Investimento</span>
+    <h2>Matricule-se no Lyceu</h2>
+    <p class="sub">Uma escola de formação filosófica séria, ao alcance de quem está pronto.</p>
+  </div>
+
+  <div class="price-card">
+    <span class="price-school">Lyceu · Prof. Lucca de Tomás</span>
+    <h3>Escola de Filosofia Clássica</h3>
+
+    <div class="price-main"><sup>R$</sup>500</div>
+    <p class="price-period">por mês · acesso ao 1º ano completo</p>
+
+    <ul class="price-list">
+      <li><span class="ck">✦</span>Aulas ao vivo no Zoom (18h–19h30)</li>
+      <li><span class="ck">✦</span>Gravações disponíveis na plataforma</li>
+      <li><span class="ck">✦</span>Textos traduzidos pelo Prof. Lucca (exclusivo)</li>
+      <li><span class="ck">✦</span>Método socrático · Currículo Thomas Aquinas College</li>
+      <li><span class="ck">✦</span>Acesso à comunidade de alunos</li>
+      <li><span class="ck">✦</span>4 anos de formação filosófica completa</li>
+    </ul>
+
+    <a href="#" class="btn-gold" style="width:100%;justify-content:center;">Garantir minha vaga agora →</a>
+    <p class="price-note">Vagas limitadas por turma. Entre em contato para verificar disponibilidade.</p>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<section class="section-faq" id="faq">
+  <div class="hd w">
+    <span class="tag">Dúvidas</span>
+    <h2>Perguntas frequentes</h2>
+  </div>
+
+  <div class="faq-wrap">
+    <div class="faq-item open" onclick="this.classList.toggle('open')">
+      <button class="faq-btn"><span class="faq-qtext">Preciso ter conhecimento prévio de filosofia?</span><span class="faq-ico">+</span></button>
+      <div class="faq-ans">Não. O currículo começa do fundamento. As aulas introdutórias com C.S. Lewis e Platão são projetadas para quem chega sem base formal. O que você precisa é disposição para ler e pensar.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <button class="faq-btn"><span class="faq-qtext">As aulas ficam gravadas se eu não puder assistir ao vivo?</span><span class="faq-ico">+</span></button>
+      <div class="faq-ans">Sim. Todas as aulas ficam gravadas e disponíveis na plataforma. Mas recomendamos fortemente a presença ao vivo — o debate socrático é parte essencial do aprendizado e não se replica no vídeo.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <button class="faq-btn"><span class="faq-qtext">Posso acessar os textos traduzidos mesmo se faltar aulas?</span><span class="faq-ico">+</span></button>
+      <div class="faq-ans">Sim. Os textos traduzidos pelo Prof. Lucca ficam disponíveis na plataforma para todos os alunos ativos, independente da presença nas aulas.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <button class="faq-btn"><span class="faq-qtext">Qual é o compromisso de tempo semanal?</span><span class="faq-ico">+</span></button>
+      <div class="faq-ans">As aulas ao vivo são das 18h às 19h30, todos os dias úteis — 90 minutos por dia. Além disso, recomendamos tempo de leitura dos textos. É uma formação séria que exige dedicação real.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <button class="faq-btn"><span class="faq-qtext">O que é o Thomas Aquinas College e por que esse currículo?</span><span class="faq-ico">+</span></button>
+      <div class="faq-ans">O Thomas Aquinas College é uma das últimas instituições do mundo a manter o Great Books Program em sua forma original — estudando os textos primários da tradição ocidental, do início ao fim, sem intermediários. É o padrão mais rigoroso de educação clássica existente.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <button class="faq-btn"><span class="faq-qtext">Ainda tenho dúvidas. Posso falar com o professor?</span><span class="faq-ico">+</span></button>
+      <div class="faq-ans">Sim. Entre em contato pelo canal oficial do Prof. Lucca e ele ou nossa equipe irá te atender para esclarecer qualquer dúvida antes da matrícula.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA FINAL ══ -->
+<section class="section-cta">
+  <div class="ornament">⚜</div>
+  <h2>Comece hoje a pensar com<br><em>clareza e profundidade.</em></h2>
+  <p class="lead">Escolha a filosofia como modo de vida. Escolha o Lyceu.</p>
+  <div class="cta-btns">
+    <a href="#investimento" class="btn-gold">Matricular-me agora →</a>
+    <a href="#curriculo" class="btn-ghost">Ver o currículo completo</a>
+  </div>
+  <p class="cta-sub">A partir de R$ 500/mês · Vagas limitadas · Aulas ao vivo no Zoom</p>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="ft-brand">
+    <span class="ft-name">LYCEU</span>
+    <p>Escola de filosofia tradicional pelo método socrático, fundada pelo Prof. Lucca de Tomás.</p>
+  </div>
+  <ul class="ft-links">
+    <li><a href="#curriculo">Currículo</a></li>
+    <li><a href="#professor">O Professor</a></li>
+    <li><a href="#formato">Formato</a></li>
+    <li><a href="#investimento">Investimento</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <ul class="ft-links">
+    <li><a href="#">Política de Privacidade</a></li>
+    <li><a href="#">Termos de Uso</a></li>
+    <li><a href="#">Contato</a></li>
+  </ul>
+  <div class="ft-copy">
+    <span>© 2025 Lyceu · Prof. Lucca de Tomás · Todos os direitos reservados.</span>
+    <span>Escola de Filosofia Clássica</span>
+  </div>
+</footer>
+
+<script>
+function toggleAcc(el) {
+  document.querySelectorAll('.acc').forEach(a => { if (a !== el) a.classList.remove('open'); });
+  el.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
