@@ -1281,6 +1281,119 @@ footer {
 }
 
 /* ═══════════════════════════
+   PROFESSOR PHOTO ANIMATION
+═══════════════════════════ */
+@keyframes profDrift {
+  0%   { transform: scale(1.06) translateY(calc(var(--prof-parallax, 0px) + 0px)); }
+  50%  { transform: scale(1.03) translateY(calc(var(--prof-parallax, 0px) - 10px)); }
+  100% { transform: scale(1.06) translateY(calc(var(--prof-parallax, 0px) + 0px)); }
+}
+@keyframes profShimmer {
+  0%   { opacity: 0.92; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.92; }
+}
+.prof-visual {
+  --prof-parallax: 0px;
+}
+.prof-visual img {
+  animation: profDrift 8s ease-in-out infinite, profShimmer 5s ease-in-out infinite;
+  will-change: transform;
+  transition: filter 0.5s ease;
+}
+.section-prof:hover .prof-visual img {
+  filter: brightness(1.06) contrast(1.03);
+}
+.prof-visual::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 1;
+  background: radial-gradient(ellipse at 30% 60%, rgba(200,169,110,0.06) 0%, transparent 60%);
+  pointer-events: none;
+  animation: profShimmer 5s ease-in-out infinite reverse;
+}
+
+/* ═══════════════════════════
+   ENHANCED BUTTON GLOW
+═══════════════════════════ */
+@keyframes btnGlowPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 18px rgba(200,169,110,0.55),
+      0 4px 20px rgba(200,169,110,0.35),
+      inset 0 1px 0 rgba(255,255,255,0.28);
+  }
+  50% {
+    box-shadow:
+      0 0 32px rgba(200,169,110,0.75),
+      0 6px 30px rgba(200,169,110,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.32);
+  }
+}
+.btn-primary {
+  animation: btnGlowPulse 3s ease-in-out infinite;
+}
+.btn-primary:hover {
+  animation: none;
+  background-position: 100% 0%;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow:
+    0 0 55px rgba(200,169,110,0.9),
+    0 0 20px rgba(200,169,110,0.6),
+    0 10px 40px rgba(200,169,110,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.btn-outline:hover {
+  border-color: var(--gold-lt);
+  background: rgba(200,169,110,0.12);
+  color: var(--gold-lt);
+  box-shadow:
+    0 0 36px rgba(200,169,110,0.5),
+    0 0 12px rgba(200,169,110,0.3),
+    inset 0 0 20px rgba(200,169,110,0.1);
+  transform: translateY(-2px);
+}
+
+/* ── enhanced shimmer on hover ── */
+.btn-primary::before, .btn-outline::before {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.48), rgba(255,255,255,0.12), transparent);
+}
+
+/* ── card hover glow border ── */
+.dep-card:hover {
+  box-shadow: 0 20px 56px rgba(0,0,0,0.4), 0 0 0 1px rgba(200,169,110,0.35), 0 0 24px rgba(200,169,110,0.12);
+}
+.ing-card:hover {
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(200,169,110,0.25);
+}
+.year-col:hover {
+  box-shadow: 0 16px 48px rgba(0,0,0,0.35), 0 0 20px rgba(200,169,110,0.1);
+}
+
+/* ── acc-trigger hover upgrade ── */
+.acc-trigger:hover .acc-trigger-title {
+  color: var(--gold-lt);
+  transition: color .2s;
+}
+.acc-ico {
+  transition: transform .35s cubic-bezier(.4,0,.2,1), color .2s;
+}
+.acc-trigger:hover .acc-ico {
+  color: var(--gold-lt);
+}
+
+/* ── faq hover upgrade ── */
+.faq-btn:hover .faq-q {
+  color: var(--gold-lt);
+  transition: color .2s;
+}
+.faq-ico {
+  transition: transform .35s cubic-bezier(.4,0,.2,1), color .2s;
+}
+.faq-btn:hover .faq-ico {
+  color: var(--gold-lt);
+}
+
+/* ═══════════════════════════
    PREMIUM UPGRADES
 ═══════════════════════════ */
 
@@ -2038,16 +2151,6 @@ footer::before {
   </div>
 </section>
 
-<!-- ════ CTA FINAL ════ -->
-<section class="section-cta">
-  <h2 class="cta-title">Se você deseja uma formação filosófica séria,<br><em>o Lyceu foi feito para você.</em></h2>
-  <p class="cta-sub">Enraizada na Tradição, acessível a partir da sua casa. Clique abaixo e conheça os detalhes do nosso processo de ingresso.</p>
-  <div class="cta-btns">
-    <a href="#investimento" class="btn-primary btn-hero">Ingressar no Lyceum →</a>
-    <a href="#curriculo" class="btn-outline">Ver o currículo completo</a>
-  </div>
-  <p class="cta-caption">Vagas limitadas por turma · Horário flexível · Todas as aulas gravadas</p>
-</section>
 
 <!-- ════ FOOTER ════ -->
 <footer>
@@ -2093,12 +2196,26 @@ function toggleAcc(el) {
 /* ── smooth scroll for anchor links ── */
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
-    const target = document.querySelector(a.getAttribute('href'));
+    const href = a.getAttribute('href');
+    if (!href || href === '#') return;
+    const target = document.querySelector(href);
     if (!target) return;
     e.preventDefault();
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const navH = document.querySelector('nav')?.offsetHeight || 68;
+    const top = target.getBoundingClientRect().top + window.scrollY - navH;
+    window.scrollTo({ top, behavior: 'smooth' });
     // close mobile menu if open
-    document.querySelector('.nav-mobile-menu')?.classList.remove('open');
+    const card = document.getElementById('nm-card');
+    const overlay = document.getElementById('nm-overlay');
+    const ham = document.getElementById('nav-ham');
+    if (card?.classList.contains('open')) {
+      card.classList.remove('open');
+      overlay?.classList.remove('open');
+      ham?.classList.remove('open');
+      ham?.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      setTimeout(() => { card.style.display = 'none'; overlay && (overlay.style.display = 'none'); }, 380);
+    }
   });
 });
 
@@ -2136,7 +2253,7 @@ window.addEventListener('scroll', () => {
 const revealTargets = [
   // section headers
   { sel: '.section-about .eyebrow, .section-about .section-title, .section-about .about-quote-block', cls: 'reveal' },
-  { sel: '.about-text p', cls: 'reveal' },jos
+  { sel: '.about-text p', cls: 'reveal' },
   { sel: '.about-pillars .pillar', cls: 'reveal' },
   { sel: '.section-video .video-header', cls: 'reveal' },
   { sel: '.video-wrap', cls: 'reveal-scale' },
@@ -2344,6 +2461,34 @@ const heroTitleEl = document.querySelector('.hero-title');
 if (heroTitleEl) {
   heroTitleEl.style.borderRight = 'none';
 }
+
+/* ── professor photo parallax ── */
+const profVisual = document.querySelector('.prof-visual');
+const profSection = document.querySelector('.section-prof');
+if (profVisual && profSection) {
+  profVisual.style.overflow = 'hidden';
+  window.addEventListener('scroll', () => {
+    const rect = profSection.getBoundingClientRect();
+    const vh = window.innerHeight;
+    if (rect.bottom < 0 || rect.top > vh) return;
+    const progress = (vh - rect.top) / (vh + rect.height);
+    const offset = (progress - 0.5) * 50;
+    profVisual.style.setProperty('--prof-parallax', offset + 'px');
+  }, { passive: true });
+}
+
+/* ── nav active link highlight on scroll ── */
+const navSections = document.querySelectorAll('section[id]');
+const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  navSections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  navAnchors.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : '';
+  });
+}, { passive: true });
 
 </script>
 </body>
