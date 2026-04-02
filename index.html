@@ -319,28 +319,74 @@ nav {
 .hm-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--gold); opacity: 0.7; }
 
 /* ═══════════════════════════
-   STATS BAR
+   DIFERENCIAIS
 ═══════════════════════════ */
-.stats-bar {
+.section-diff {
   background: var(--surface);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  display: flex; flex-wrap: wrap;
+  padding: 64px 0 72px;
+  position: relative;
 }
-.stat-item {
-  flex: 1; min-width: 150px;
-  padding: 32px 20px; text-align: center;
-  border-right: 1px solid var(--line);
+.section-diff::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent 0%, rgba(200,169,110,0.4) 50%, transparent 100%);
 }
-.stat-item:last-child { border-right: none; }
-.stat-num {
+.diff-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.diff-card {
+  position: relative;
+  padding: 40px 34px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s, background .3s;
+  cursor: default;
+}
+.diff-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, transparent, var(--gold-lt), transparent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform .5s cubic-bezier(.4,0,.2,1);
+}
+.diff-card:hover::before { transform: scaleX(1); }
+.diff-card:hover {
+  transform: translateY(-4px);
+  background: rgba(200,169,110,0.025);
+  box-shadow: 0 20px 56px rgba(0,0,0,0.4), 0 0 0 1px rgba(200,169,110,0.2), 0 0 24px rgba(200,169,110,0.09);
+}
+.diff-icon {
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 22px;
+  color: var(--gold);
+  transition: transform .35s cubic-bezier(.4,0,.2,1), color .25s;
+}
+.diff-card:hover .diff-icon { transform: scale(1.1) rotate(-6deg); color: var(--gold-lt); }
+.diff-ord {
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(200,169,110,0.45);
+  display: block; margin-bottom: 10px;
+}
+.diff-title {
   font-family: 'Playfair Display', serif;
-  font-size: 34px; font-weight: 700; color: var(--gold);
-  display: block; line-height: 1;
+  font-size: 19px; font-weight: 700;
+  color: var(--cream); line-height: 1.3;
+  margin: 0 0 14px;
 }
-.stat-txt {
-  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-  color: var(--muted); margin-top: 6px; display: block;
+.diff-desc {
+  font-size: 14px; line-height: 1.78;
+  color: var(--muted);
+  margin: 0;
 }
 
 /* ═══════════════════════════
@@ -871,7 +917,7 @@ footer {
   .ft-col { padding-top: 8px; }
   .ft-quote { margin-top: 24px; }
   .ft-bottom { flex-direction: column; gap: 8px; text-align: center; margin-top: 36px; }
-  .stats-bar .stat-item { min-width: 50%; border-bottom: 1px solid var(--line); }
+  .diff-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
@@ -1000,12 +1046,6 @@ footer {
   padding-left: 8px;
 }
 
-.stat-item {
-  transition: background .25s;
-}
-.stat-item:hover {
-  background: rgba(200,169,110,0.05);
-}
 
 .fc-row {
   transition: background .25s, transform .25s;
@@ -1459,22 +1499,7 @@ nav {
     rgba(8,8,10,0.02) 100%) !important;
 }
 
-/* ── stats bar upgrade ── */
-.stats-bar {
-  background: linear-gradient(135deg, var(--surface) 0%, rgba(13,13,16,0.95) 100%);
-  position: relative;
-}
-.stats-bar::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(to right, transparent 0%, rgba(200,169,110,0.4) 50%, transparent 100%);
-}
-.stat-num {
-  background: linear-gradient(135deg, var(--gold-lt), var(--gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+
 
 /* ── pillar icon numero upgrade ── */
 .pillar-num {
@@ -1723,13 +1748,58 @@ footer::before {
   </div>
 </section>
 
-<!-- STATS -->
-<div class="stats-bar">
-  <div class="stat-item"><span class="stat-num">4</span><span class="stat-txt">Anos de formação</span></div>
-  <div class="stat-item"><span class="stat-num">90<small style="font-size:16px;font-family:Outfit,sans-serif">min</small></span><span class="stat-txt">Por aula ao vivo</span></div>
-  <div class="stat-item"><span class="stat-num">Combinar</span><span class="stat-txt">Horário flexível</span></div>
-  <div class="stat-item"><span class="stat-num">100%</span><span class="stat-txt">Aulas gravadas</span></div>
-</div>
+<!-- ════ DIFERENCIAIS ════ -->
+<section class="section-diff">
+  <div class="w">
+    <div class="diff-grid">
+
+      <div class="diff-card">
+        <div class="diff-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 7h17a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-5l-4 4v-4H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/>
+            <path d="M25 13h5a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2v3l-3-3h-3"/>
+          </svg>
+        </div>
+        <span class="diff-ord">01</span>
+        <h3 class="diff-title">Debates Filosóficos ao Vivo</h3>
+        <p class="diff-desc">Mais do que assistir aulas, você participa de diálogos filosóficos em tempo real — a prática socrática que transforma o modo de pensar.</p>
+      </div>
+
+      <div class="diff-card">
+        <div class="diff-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 9a2 2 0 0 1 2-2h8v26H10a2 2 0 0 1-2-2V9z"/>
+            <path d="M18 7h12a2 2 0 0 1 2 2v22a2 2 0 0 1-2 2H18V7z"/>
+            <line x1="11" y1="13" x2="16" y2="13"/>
+            <line x1="11" y1="17" x2="16" y2="17"/>
+            <line x1="21" y1="13" x2="29" y2="13"/>
+            <line x1="21" y1="17" x2="29" y2="17"/>
+            <line x1="21" y1="21" x2="29" y2="21"/>
+          </svg>
+        </div>
+        <span class="diff-ord">02</span>
+        <h3 class="diff-title">Biblioteca de Textos Clássicos</h3>
+        <p class="diff-desc">Curadoria de obras originais comentadas — de Platão a Tomás de Aquino — organizadas por tema, período e nível de profundidade.</p>
+      </div>
+
+      <div class="diff-card">
+        <div class="diff-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="14" cy="17" r="7"/>
+            <circle cx="14" cy="17" r="3"/>
+            <line x1="21" y1="17" x2="36" y2="17"/>
+            <line x1="31" y1="17" x2="31" y2="21"/>
+            <line x1="36" y1="17" x2="36" y2="21"/>
+          </svg>
+        </div>
+        <span class="diff-ord">03</span>
+        <h3 class="diff-title">Acesso Vitalício ao Acervo</h3>
+        <p class="diff-desc">Todas as aulas, debates e materiais permanecem disponíveis para sempre — porque a formação filosófica não tem prazo de validade.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <!-- ════ O QUE É ════ -->
 <section class="section-about" id="sobre">
@@ -2284,7 +2354,7 @@ const revealTargets = [
   { sel: '.faq-header', cls: 'reveal' },
   { sel: '.faq-item', cls: 'reveal' },
   { sel: '.cta-title, .cta-sub, .cta-btns, .cta-caption', cls: 'reveal' },
-  { sel: '.stats-bar .stat-item', cls: 'reveal' },
+  { sel: '.diff-card', cls: 'reveal' },
 ];
 
 revealTargets.forEach(({ sel, cls }) => {
@@ -2312,39 +2382,7 @@ document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale')
   observer.observe(el);
 });
 
-/* ── animated counters for stats bar ── */
-function animateCounter(el, target, suffix = '') {
-  const isText = isNaN(target);
-  if (isText) { el.textContent = target; return; }
-  const duration = 1400;
-  const start = performance.now();
-  function step(now) {
-    const p = Math.min((now - start) / duration, 1);
-    const ease = 1 - Math.pow(1 - p, 3);
-    el.textContent = Math.round(ease * target) + suffix;
-    if (p < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
 
-const statsObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    const numEl = entry.target.querySelector('.stat-num');
-    if (!numEl) return;
-    const raw = numEl.dataset.val || numEl.textContent.trim();
-    numEl.dataset.val = raw;
-    if (raw === 'Flex') { numEl.textContent = 'Flex'; }
-    else if (raw === '4')  animateCounter(numEl, 4);
-    else if (raw === '90min') {
-      numEl.innerHTML = '90<small style="font-size:16px;font-family:Outfit,sans-serif">min</small>';
-    }
-    else if (raw === '100%') animateCounter(numEl, 100, '%');
-    statsObserver.unobserve(entry.target);
-  });
-}, { threshold: 0.5 });
-
-document.querySelectorAll('.stat-item').forEach(el => statsObserver.observe(el));
 
 /* ── nav hamburger ── */
 (function() {
